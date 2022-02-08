@@ -1,0 +1,109 @@
+
+<div class="row principal">
+  <div class="col-md-6 container1">
+      <h1 class="text-center">
+          Agregar Factura Nueva
+      </h1>
+      <br>
+      <hr>
+      <br>
+      <dx-form id="form"  [formData]="invoice">
+        <dxi-item itemType="group" cssClass="second-group" [colCount]="1">
+            <dxi-item dataField="idClient"
+              [label]="{text: 'Cliente'}"
+              editorType="dxSelectBox"
+              [editorOptions]="{items: clients, displayExpr:'nameClient', valueExpr:'idClient'}">
+            </dxi-item>
+            <dxi-item itemType="group" cssClass="second-group" [colCount]="3">
+                <dxi-item [colSpan]="2"
+                dataField="idProduct"
+                [label]="{text: 'Producto'}"
+                editorType="dxSelectBox"
+                [editorOptions]="{ items: products, displayExpr:'nameProduct', valueExpr:'idProduct' }">
+                </dxi-item>
+                <dxi-item dataField="quantity" 
+                [label]="{ text: 'Cantidad' }"
+                [colSpan]="1"
+                editorType="dxNumberBox">             
+                </dxi-item>
+            </dxi-item>
+          <dxi-item [colSpan]="1" >
+            <div *dxTemplate class="divButton"> 
+              <dx-button  class="ButtonSave" (onClick)="addProd($event)" text="Añadir Producto" stylingMode="contained" type="default"></dx-button>
+            </div>                
+          </dxi-item>
+            
+            <dxi-item itemType="group" cssClass="second-group" [colSpan]="1">
+              <dx-data-grid
+              id="gridContainer"
+              [dataSource]="details"
+              [rowAlternationEnabled]="true"
+              [showBorders]="true">
+              <dxi-column dataField="idProduct" caption="Id Producto"></dxi-column>
+              <dxi-column dataField="nameProduct"  caption="Nombre Producto"></dxi-column>
+              <dxi-column dataField="quantityProduct"  caption="Cantidad Producto"></dxi-column>
+              <dxi-column dataField="costProduct"  caption="Total Producto"></dxi-column>
+
+
+            </dx-data-grid>
+            </dxi-item>
+
+
+            
+            
+        
+        </dxi-item>
+        <dxi-item [colCount]="1">
+          <div class="divButton" *dxTemplate> 
+            <dx-button class="ButtonSave" (onClick)="SaveInvoice($event)" text="Guardar Factura" stylingMode="success" type="success"></dx-button>
+          </div>
+        </dxi-item>
+      </dx-form>
+  </div>
+  <div class="col-md-6 container2">
+      <h1 class="text-center">
+          Listado de Factura
+      </h1>
+      <br>
+      <hr>
+      <br>
+      <dx-data-grid
+      id="gridContainer"
+      [dataSource]="invoices"
+      [rowAlternationEnabled]="true"
+      [showBorders]="true"
+    >
+      <dxi-column dataField="idInvoice" [width]="70" caption="Id Factura"></dxi-column>
+      <dxi-column dataField="identificationNumberClient" caption="Cedula Cliente"></dxi-column>
+      <dxi-column dataField="idClientNavigation.nameCompleteClient" caption="Nombre Cliente"></dxi-column>
+      
+      <dxi-column dataField="detailInvoice" cellTemplate="products" caption="Productos"></dxi-column>
+      <dxi-column dataField=""  cellTemplate="cost" dataType="number" caption="Costo"></dxi-column>
+      <dxi-column dataField=""  cellTemplate="quanty" dataType="number" caption="Cantidad Comprada"></dxi-column>
+    
+   
+      <div *dxTemplate="let data of 'quanty'">
+        <div *ngFor="let det of data.data.detailInvoice">
+           {{det.quantityProduct}} <br>
+        </div>
+      </div>
+
+      <div *dxTemplate="let data of 'products'">
+        <div *ngFor="let det of data.data.detailInvoice">
+           {{det.nameProduct}} <br>
+        </div>
+      </div>
+
+      <div *dxTemplate="let data of 'cost'">
+        <div *ngFor="let det of data.data.detailInvoice">
+          $ {{det.costProduct}} <br>
+        </div>
+      </div>
+    
+    </dx-data-grid>      
+    
+    </div>
+  </div>
+  
+
+
